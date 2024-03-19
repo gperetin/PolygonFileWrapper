@@ -76,3 +76,22 @@ def test_download_stock_daily_bars():
         dt.date(2024, 1, 31)
     )
     assert len(df) > 10_000
+
+
+def test_download_options_trades_for_same_date_in_range():
+    wrapper = PolygonFileWrapper()
+    df = wrapper.download_options(
+        PolygonEndpoint.TRADES,
+        dt.date(2024, 3, 18),
+        dt.date(2024, 3, 18)
+    )
+    assert len(df) > 10_000
+
+    df = wrapper.download_options(
+        PolygonEndpoint.TRADES,
+        dt.date.today(),
+        dt.date.today()
+    )
+    assert df is None
+
+

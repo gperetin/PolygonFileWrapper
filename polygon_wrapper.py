@@ -248,7 +248,7 @@ class PolygonFileWrapper():
             if df is not None:
                 dfs_list.append(df)
 
-        complete = pl.concat(dfs_list)
+        complete = pl.concat(dfs_list) if dfs_list else None
         return complete
 
     def download_stocks(
@@ -280,7 +280,7 @@ class PolygonFileWrapper():
             if df is not None:
                 dfs_list.append(df)
 
-        complete = pl.concat(dfs_list)
+        complete = pl.concat(dfs_list) if dfs_list else None
         return complete
 
     def download_and_save_options(self,
