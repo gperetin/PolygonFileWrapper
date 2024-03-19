@@ -100,7 +100,6 @@ def format_day(day: int) -> str:
         raise ValueError("Day must be an integer between 1 and 31 inclusive")
 
 
-
 class PolygonFileWrapper():
     def __init__(self, access_key=None, secret_key=None):
         self._base_bucket = 'flatfiles'
@@ -118,7 +117,7 @@ class PolygonFileWrapper():
         if not start_date <= end_date:
             raise ValueError("end_date must be greater than start_date")
         else:
-            return pd.date_range(start=start_date, end=end_date, freq='B')        
+            return pd.date_range(start=start_date, end=end_date, freq='B')
 
 
     def _init_session(self) -> boto3.client:
@@ -202,7 +201,6 @@ class PolygonFileWrapper():
                 return df
             except ClientError as e:
                 error_code = e.response['Error']['Code']
-                date = self._get_date_from_key(key)
                 if error_code == '404':
                     print(f"404 - File not found for key - {key} ")
                     return None
@@ -220,8 +218,6 @@ class PolygonFileWrapper():
         if df is None:
             return None
         return df
-
-
 
     def download_options(
             self,
@@ -254,7 +250,6 @@ class PolygonFileWrapper():
 
         complete = pl.concat(dfs_list)
         return complete
-    
 
     def download_stocks(
             self,
@@ -286,9 +281,7 @@ class PolygonFileWrapper():
                 dfs_list.append(df)
 
         complete = pl.concat(dfs_list)
-        return complete    
-
-    #Indeed complicated to manage at the library level -> I need to snappy which may not be the case for everyone ...
+        return complete
 
     def download_and_save_options(self,
                                   endpoint: PolygonEndpoint,
@@ -304,8 +297,8 @@ class PolygonFileWrapper():
             first_date = df.item(0, "timestamp").date()
             last_date = df.item(-1, "timestamp").date()
             fname = f"{first_date}_{last_date}.parquet" if first_date != last_date else f"{first_date}.parquet"
-            df.write_parquet(os.path.join(dir, fname))    
-    
+            df.write_parquet(os.path.join(dir, fname))
+
     def download_and_save_stocks(self,
                                   endpoint: PolygonEndpoint,
                                   start_date: dt.date,
@@ -320,7 +313,5 @@ class PolygonFileWrapper():
             first_date = df.item(0, "timestamp").date()
             last_date = df.item(-1, "timestamp").date()
             fname = f"{first_date}_{last_date}.parquet" if first_date != last_date else f"{first_date}.parquet"
-            df.write_parquet(os.path.join(dir, fname))    
-    
+            df.write_parquet(os.path.join(dir, fname))
 
-    

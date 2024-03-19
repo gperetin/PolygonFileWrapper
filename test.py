@@ -48,3 +48,31 @@ def test_download_options_daily_bars_for_date_range():
     assert len(df) > 1_000
 
 
+def test_download_stock_trades():
+    wrapper = PolygonFileWrapper()
+    df = wrapper.download_stocks(
+        PolygonEndpoint.TRADES,
+        dt.date(2024, 1, 30),
+        dt.date(2024, 1, 31)
+    )
+    assert len(df) > 100_000
+
+
+def test_download_stock_minute_bars():
+    wrapper = PolygonFileWrapper()
+    df = wrapper.download_stocks(
+        PolygonEndpoint.MINUTES,
+        dt.date(2024, 1, 30),
+        dt.date(2024, 1, 31)
+    )
+    assert len(df) > 100_000
+
+
+def test_download_stock_daily_bars():
+    wrapper = PolygonFileWrapper()
+    df = wrapper.download_stocks(
+        PolygonEndpoint.DAY,
+        dt.date(2024, 1, 30),
+        dt.date(2024, 1, 31)
+    )
+    assert len(df) > 10_000
